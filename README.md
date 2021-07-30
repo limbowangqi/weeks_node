@@ -1,6 +1,6 @@
 # egg-demo
 
-desc
+基于阿里开源框架egg，搭建了一套后台系统，目前自己玩玩挺ok
 
 ## QuickStart
 
