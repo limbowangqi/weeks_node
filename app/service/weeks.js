@@ -8,9 +8,22 @@ class HomeService extends Service {
     return businessList;
   }
 
-  async search() {
-    const businessList = await this.app.mysql.select('business_info');
-    return businessList;
+  async searchEvent(businessId, pageId, eventId) {
+    const eventList = await this.app.mysql.select('events_info', {
+      where: {
+        businessId, pageId, eventId,
+      },
+    });
+    return eventList;
+  }
+
+  async searchPage(businessId, eventId) {
+    const pageList = await this.app.mysql.select('pages_info', {
+      where: {
+        businessId, eventId,
+      },
+    });
+    return pageList;
   }
 
   async getPageList(businessId) {

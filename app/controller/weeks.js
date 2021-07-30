@@ -26,9 +26,25 @@ class HomeController extends Controller {
   }
 
   async search() {
-    // const { ctx } = this;
-    // const home = await ctx.service.weeks.search();
-    // ctx.response.body = JSON.stringify(home);
+    const { ctx } = this;
+    let key = ctx.query.key;
+    if (key.length !== 15 && key.length !== 12) {
+      ctx.response.body = this.responseFail('不合法的关键字');
+      return;
+    }
+    if (key.length === 15) {
+      key = key.substring(3, 15);
+    }
+
+    const businessId = key.substring(0, 4);
+    const pageId = key.substring(4, 8);
+    const eventId = key.substring(8, 12);
+    const pageList = await ctx.service.weeks.searchPage(businessId, pageId);
+    const eventList = await ctx.service.weeks.searchEvent(businessId, pageId, eventId);
+
+    ctx.response.body = this.responseSuccess({
+      businessId, pageId, pageList, eventList,
+    });
   }
 
   async getPageList() {
