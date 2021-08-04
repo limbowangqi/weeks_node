@@ -33,11 +33,19 @@ class HomeService extends Service {
     return businessList;
   }
 
-  async getEventList(businessId, pageId) {
-    const businessList = await this.app.mysql.select('events_info', {
-      where: { businessId, pageId },
+  async getEventList(businessId, pageId, current, pageSize) {
+    const total = await this.app.mysql.count('events_info', {
+      businessId, pageId,
     });
-    return businessList;
+
+    const eventList = await this.app.mysql.select('events_info', {
+      where: { businessId, pageId },
+      limit: Number(pageSize), // 返回数据量
+      offset: (current - 1) * pageSize, // 数据偏移量
+    });
+    return {
+      eventList, total,
+    };
   }
 
   async addPageInfos(businessId, params) {

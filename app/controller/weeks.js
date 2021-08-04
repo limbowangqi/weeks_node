@@ -58,7 +58,9 @@ class HomeController extends Controller {
     const { ctx } = this;
     const businessId = ctx.query.businessId;
     const pageId = ctx.query.pageId;
-    const pageList = await ctx.service.weeks.getEventList(businessId, pageId);
+    const current = ctx.query.current || 1;
+    const pageSize = ctx.query.pageSize || 10;
+    const pageList = await ctx.service.weeks.getEventList(businessId, pageId, current, pageSize);
     ctx.response.body = this.responseSuccess(pageList);
   }
 
